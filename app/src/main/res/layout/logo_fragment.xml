@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:id="@+id/logoFragment"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background_selector">
+
+    <ImageView
+        android:id="@+id/logoRss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="192dp"
+        android:paddingLeft="140dp"
+
+        android:src="@drawable/icon" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RSS Reader"
+        android:paddingLeft="136dp"
+        android:textSize="24sp"
+        android:fontFamily="sans-serif-black"
+        android:textStyle="normal"
+        android:textColor="#ffffff"
+        android:gravity="center_horizontal"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        android:textStyle="normal"
+        android:paddingLeft="122dp"
+        android:paddingTop="5dp"
+        android:textColor="#deffffff"
+        android:lineSpacingExtra="8sp"
+        android:gravity="center_horizontal"
+        android:text="Your Favourite Source"
+        />
+    <ImageView
+        android:id="@+id/logoMercury"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="82dp"
+        android:paddingLeft="115dp"
+        android:src="@drawable/logo" />
+
+</LinearLayout>
