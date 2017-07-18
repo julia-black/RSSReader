@@ -25,10 +25,10 @@ public final class RssUtils {
             if (parser.getEventType() != XmlPullParser.START_TAG)
                 continue;
             String name = parser.getName();
-
+            String urlImage = "";
             if ("item".equals(name)) {
                 parser.require(XmlPullParser.START_TAG, null, "item");
-                Log.i("UriDataLoader", "Found item" + parser.getText());
+                Log.i("UriDataLoader", "Found item " + parser.getText());
 
                 Article article = new Article();
                 while (parser.next() != XmlPullParser.END_TAG) {
@@ -45,7 +45,12 @@ public final class RssUtils {
                         article.pubDate = parser.nextText();
                     } else if ("link".equals(itemEntry)) {
                         article.link = parser.nextText();
-                    } else {
+                    } else if("enclosure".equals(itemEntry)){
+                        //article.urlImage = parser.getAttributeValue(0);
+                        urlImage = parser.getAttributeValue(0);
+                        article.link += " " + urlImage;
+                    }
+                    else {
                         skipTag(parser);
                     }
                 }

@@ -6,21 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-public class PreviewFragment extends Fragment {
+/**
+ * Created by Juli on 18.07.2017.
+ */
 
-   // private WebView webView;
+public class WebFragment extends Fragment {
+    private WebView webView;
 
-    private ImageView imageView;
-    private TextView textTitle;
-    private TextView textDescript;
-    private TextView textDate;
-    private TextView textLink;
-
-
-    public PreviewFragment() {
+    public WebFragment() {
         setArguments(new Bundle());
     }
 
@@ -37,5 +31,4 @@ public class PreviewFragment extends Fragment {
         String url = getArguments().getString("url");
         webView.loadUrl(url);
     }
-
 }

@@ -8,6 +8,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
@@ -18,6 +20,9 @@ import android.util.Log;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
 
 import ru.sgu.csiit.sgu17.Article;
@@ -93,6 +98,21 @@ public class RefreshService extends Service {
         sendDataRefreshedNotification();
     }
 
+    //public Bitmap getBitMapFromURL(String src){
+    //    try {
+    //        java.net.URL url = new URL(src);
+    //        HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+    //        connection.setDoInput(true);
+    //        connection.connect();
+    //        InputStream iS = connection.getInputStream();
+    //        Bitmap bitmap = BitmapFactory.decodeStream(iS);
+    //        return bitmap;
+    //    }
+    //    catch (Exception e){
+    //        e.printStackTrace();
+    //        return null;
+    //    }
+    //}
     private void loadData() {
         mainHandler.post(new Runnable() {
             @Override

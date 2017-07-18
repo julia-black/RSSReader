@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class SguDbHelper extends SQLiteOpenHelper {
 
-    private static final String DB_NAME = "sgudb.sqlite";
-    private static final int DB_VERSION = 3;
+    private static final String DB_NAME = "sgudb.sqlite1";
+    private static final int DB_VERSION = 2;
 
     public SguDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -31,4 +31,5 @@ public class SguDbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE " + SguDbContract.TABLE_NAME);
         onCreate(db);
     }
+
 }
