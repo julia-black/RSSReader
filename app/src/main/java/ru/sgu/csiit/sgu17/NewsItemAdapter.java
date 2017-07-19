@@ -73,7 +73,6 @@ class NewsItemAdapter extends BaseAdapter {
 
         ViewHolder holder = (ViewHolder) v.getTag();
         holder.titleView.setText(art.title);
-//        holder.descriptionView.setText(art.description);
         holder.pubDateView.setText(art.pubDate);
 
         LoadImage loadImage = new LoadImage(art.link.split(" ")[1], holder.imageNews);
@@ -87,19 +86,5 @@ class NewsItemAdapter extends BaseAdapter {
         private TextView pubDateView;
         private ImageView imageNews;
     }
-    //public Bitmap getBitMapFromURL(String src){
-    //    try{
-    //        URL url = new URL(src);
-    //        HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-    //        connection.setDoInput(true);
-    //        connection.connect();
-    //        InputStream iS = connection.getInputStream();
-    //        Bitmap bitmap = BitmapFactory.decodeStream(iS);
-    //        return bitmap;
-    //    }
-    //    catch (Exception e){
-    //        e.printStackTrace();
-    //        return null;
-    //    }
-    //}
+
 }

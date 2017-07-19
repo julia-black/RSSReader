@@ -7,9 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,13 +27,23 @@ import java.util.List;
 import ru.sgu.csiit.sgu17.service.RefreshService;
 
 public class NewsListFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<List<Article>> {
+        implements LoaderManager.LoaderCallbacks<List<Article>>, SwipeRefreshLayout.OnRefreshListener {
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private static final String LOG_TAG = "NewsListActivity";
 
     private final RefreshBroadcastReceiver refreshBroadcastReceiver = new RefreshBroadcastReceiver();
     private final ArrayList<Article> data = new ArrayList<>();
     private NewsItemAdapter dataAdapter;
+
+
+    @Override
+    public void onRefresh() {
+       Intent serviceIntent = new Intent(getActivity(), RefreshService.class);
+       getActivity().startService(serviceIntent);
+       swipeRefreshLayout.setRefreshing(false);
+    }
 
     private final class RefreshBroadcastReceiver extends BroadcastReceiver {
         @Override
@@ -52,6 +66,7 @@ public class NewsListFragment extends Fragment
         super.onCreate(savedInstanceState);
         this.dataAdapter = new NewsItemAdapter(getActivity(), data);
         getLoaderManager().initLoader(0, null, this);
+
     }
 
     @Override
@@ -72,21 +87,16 @@ public class NewsListFragment extends Fragment
             }
         });
 
-        Button refreshBtn = (Button) v.findViewById(R.id.refresh_btn);
-        refreshBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent serviceIntent = new Intent(getActivity(), RefreshService.class);
-                getActivity().startService(serviceIntent);
-            }
-        });
+        swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefresh);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
 
-        v.findViewById(R.id.prefs_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((Listener) getActivity()).OnPreferencesClicked();
-            }
-        });
+      //v.findViewById(R.id.prefs_btn).setOnClickListener(new View.OnClickListener() {
+      //    @Override
+      //    public void onClick(View v) {
+      //        ((Listener) getActivity()).OnPreferencesClicked();
+      //    }
+      //});
 
         return v;
     }

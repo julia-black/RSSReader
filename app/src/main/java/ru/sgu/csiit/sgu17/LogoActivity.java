@@ -3,6 +3,7 @@ package ru.sgu.csiit.sgu17;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 
 public class LogoActivity extends Activity{
@@ -11,9 +12,10 @@ public class LogoActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.logo_activity);
-        Thread logoTimer = new Thread(){
+        final Thread logoTimer = new Thread(){
             public void run(){
                 try{
+                    Log.i("Logo", "Logo..." );
                    int logoTimer = 0;
                    while(logoTimer < 5000){
                        sleep(100);
