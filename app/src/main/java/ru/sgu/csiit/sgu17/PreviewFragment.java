@@ -5,29 +5,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import ru.sgu.csiit.sgu17.service.LoadImage;
-
 public class PreviewFragment extends Fragment {
-
-   // private WebView webView;
 
     private ImageView imageView;
     private TextView textTitle;
     private TextView textDescript;
     private TextView textDate;
-   // private TextView textLink;
     private Article article;
 
-    //private NewsItemAdapter dataAdapter;
 
     public PreviewFragment(Article article) {
         this.article = article;
         setArguments(new Bundle());
-        //this.article = article;
     }
 
     @Override
@@ -39,7 +31,6 @@ public class PreviewFragment extends Fragment {
         this.textTitle = (TextView) v.findViewById(R.id.title_article);
         this.textDescript = (TextView) v.findViewById(R.id.description);
         this.textDate = (TextView) v.findViewById(R.id.pub_date);
-       //this.textLink = (TextView) v.findViewById(R.id.title_article);
         this.imageView = (ImageView) v.findViewById(R.id.imageNews);
 
         this.textTitle.setText(article.title);
@@ -58,7 +49,6 @@ public class PreviewFragment extends Fragment {
         return v;
     }
     public void onReadMoreClicked(){
-
         WebFragment webFragment = new WebFragment();
         webFragment.getArguments().putString("url", article.link.split(" ")[0]);
         getFragmentManager().beginTransaction()

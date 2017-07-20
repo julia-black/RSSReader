@@ -1,7 +1,10 @@
 package ru.sgu.csiit.sgu17;
 
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -9,11 +12,13 @@ import android.view.MenuItem;
 public class NewsListActivity extends AppCompatActivity
         implements NewsListFragment.Listener {
 
+    private static final String LOG_TAG = "NewsListActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.news_list_activity);
+        //сам определяет горзонт. или верт.
+        setContentView(R.layout.news_list_activity); //обертка над фрагментом
     }
 
     @Override
@@ -22,6 +27,10 @@ public class NewsListActivity extends AppCompatActivity
         if(id == R.id.action_settings){
             OnPreferencesClicked();
         }
+        else
+            if(id == R.id.action_favoriteList){
+                OnFavouriteListClicked();
+            }
         return super.onOptionsItemSelected(item);
     }
 
@@ -33,17 +42,20 @@ public class NewsListActivity extends AppCompatActivity
 
     @Override
     public void OnArticleClicked(Article article) {
-        //if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            PreviewFragment previewFragment = new PreviewFragment(article);
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, previewFragment)
-                    .addToBackStack(null)
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+
+           PreviewFragment fragment = new PreviewFragment(article);
+           getFragmentManager().beginTransaction()
+                    .add(R.id.container, fragment) //добавляем в контейнер
+                    .addToBackStack(null) //чтобы можно было нажать назад и вернуться обратно
                     .commit();
-       // }
-       // else {
-          //PreviewFragment previewFragment = (PreviewFragment) getFragmentManager()
-          //        .findFragmentById(R.id.preview_fragment);
-       // }
+        }
+        else {
+            WebFragment f = (WebFragment) getFragmentManager()
+                    .findFragmentById(R.id.preview_fragment);
+            f.getArguments().putString("url", article.link.split(" ")[0]);
+            f.reload();
+        }
     }
 
     @Override
@@ -53,6 +65,14 @@ public class NewsListActivity extends AppCompatActivity
                 .add(R.id.container, f)
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void OnFavouriteListClicked(){
+        Log.i(LOG_TAG, "click on favouriteList");
+        //FavouriteActivity favouriteActivity = new FavouriteActivity();
+        Intent intent = new Intent(NewsListActivity.this, FavouriteActivity.class);
+        startActivity(intent);
     }
 
 }

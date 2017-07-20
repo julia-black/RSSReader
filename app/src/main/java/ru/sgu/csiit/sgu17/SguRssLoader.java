@@ -41,7 +41,7 @@ final class SguRssLoader extends AsyncTaskLoader<List<Article>> {
     @Override
     public List<Article> loadInBackground() {
         List<Article> res = null;
-        // Load object into the database.
+
         SQLiteDatabase db = new SguDbHelper(getContext()).getReadableDatabase();
         Cursor cursor = db.query(SguDbContract.TABLE_NAME, new String[]{
                 SguDbContract.COLUMN_TITLE,
@@ -57,9 +57,6 @@ final class SguRssLoader extends AsyncTaskLoader<List<Article>> {
                 article.description = cursor.getString(1);
                 article.pubDate = cursor.getString(2);
                 article.link = cursor.getString(3);
-
-              //  Log.i("LOG_TAG", "link " + cursor.getString(3));
-
 
                 res.add(article);
             }

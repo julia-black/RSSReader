@@ -1,4 +1,4 @@
-package ru.sgu.csiit.sgu17.service;
+package ru.sgu.csiit.sgu17;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

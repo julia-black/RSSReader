@@ -14,7 +14,7 @@
 
     <fragment
         android:id="@+id/preview_fragment"
-        android:name="ru.sgu.csiit.sgu17.PreviewFragment"
+        android:name="ru.sgu.csiit.sgu17.WebFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1" />

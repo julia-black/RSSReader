@@ -48,7 +48,7 @@ public class RefreshService extends Service {
         @Override
         public void run() {
             while (!Thread.interrupted()) {
-                try {
+                try { //бесконечный цикл, чтобы если внешнй компонент запросит, мы не зависли
                     boolean loadAllowed;
                     loadAllowed = isPeriodicUpdatesEnabled();
                     loadAllowed = loadAllowed && (!isWiFiOnly() || isWifiConnected());
@@ -94,25 +94,10 @@ public class RefreshService extends Service {
         Log.d(LOG_TAG, "data refreshed");
         Intent broadcastIntent = new Intent();
         broadcastIntent.setAction(REFRESH_ACTION);
-        sendBroadcast(broadcastIntent);
+        sendBroadcast(broadcastIntent);//отправляем broadcast
         sendDataRefreshedNotification();
     }
 
-    //public Bitmap getBitMapFromURL(String src){
-    //    try {
-    //        java.net.URL url = new URL(src);
-    //        HttpURLConnection connection = (HttpURLConnection)url.openConnection();
-    //        connection.setDoInput(true);
-    //        connection.connect();
-    //        InputStream iS = connection.getInputStream();
-    //        Bitmap bitmap = BitmapFactory.decodeStream(iS);
-    //        return bitmap;
-    //    }
-    //    catch (Exception e){
-    //        e.printStackTrace();
-    //        return null;
-    //    }
-    //}
     private void loadData() {
         mainHandler.post(new Runnable() {
             @Override
@@ -170,10 +155,11 @@ public class RefreshService extends Service {
     }
 
     private void sendDataRefreshedNotification() {
+        //интент который нах-ся "в производстве", он используется, чтобы появлялся интент только по нажатию
         if (isNotificationsEnabled()) {
             Intent startIntent = new Intent(this, NewsListActivity.class);
             PendingIntent notificationIntent = PendingIntent.getActivity(
-                    this, 0, startIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    this, 0, startIntent, PendingIntent.FLAG_UPDATE_CURRENT);//флаг - старый интент удалиться и будет заменен на новый
             Notification notification = new Notification.Builder(this)
                     .setContentTitle("SGU RSS data refreshed")
                     .setContentText("Press notification to open")
@@ -194,7 +180,7 @@ public class RefreshService extends Service {
                     .setOngoing(true)
                     .setSmallIcon(R.drawable.sgu_main)
                     .build();
-            startForeground(1, notification);
+            startForeground(1, notification);//1 - id
         }
     }
 

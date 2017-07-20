@@ -3,6 +3,9 @@ package ru.sgu.csiit.sgu17.db;
 import android.provider.BaseColumns;
 
 public class SguDbContract implements BaseColumns {
+    //контракт - "общение" двух объектов
+
+    //В бд - любимые статьи
 
     public static final String TABLE_NAME = "articles";
 
@@ -13,4 +16,5 @@ public class SguDbContract implements BaseColumns {
     public static final String COLUMN_PUBDATE = "pub_date";
 
     private SguDbContract() {}
+    //используется не как объект, а как набор констант, поэтому создавать его никогда не будем
 }

@@ -36,6 +36,5 @@ public class LogoActivity extends Activity{
     public void toNewsListActivity(){
         Intent intent = new Intent(LogoActivity.this, NewsListActivity.class);
         startActivity(intent);
-
     }
 }

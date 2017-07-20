@@ -5,9 +5,15 @@
     tools:context=".NewsListActivity">
 
     <item
-        android:id="@+id/action_settings"
+    android:id="@+id/action_settings"
+    android:orderInCategory="101"
+    android:title="@string/action_prefs"/>
+
+    <item
+        android:id="@+id/action_favoriteList"
         android:orderInCategory="101"
-        android:title="@string/action_prefs"/>
+        android:title="@string/action_favoriteList"/>
+
     <item
         app:showAsAction="always"
         android:id="@+id/action_favorite"
