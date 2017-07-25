@@ -56,7 +56,6 @@ final class SguRssLoader extends AsyncTaskLoader<List<Article>> {
                 article.description = cursor.getString(1);
                 article.pubDate = cursor.getString(2);
                 article.link = cursor.getString(3);
-
                 res.add(article);
             }
         } finally {

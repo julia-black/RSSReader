@@ -53,7 +53,8 @@ public class NewsListActivity extends AppCompatActivity
     public void OnArticleClicked(Article article) {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-           PreviewFragment fragment = new PreviewFragment(article);
+           boolean flagFavourite = false;
+           PreviewFragment fragment = new PreviewFragment(article, flagFavourite);
            getFragmentManager().beginTransaction()
                     .add(R.id.container, fragment) //добавляем в контейнер
                     .addToBackStack(null) //чтобы можно было нажать назад и вернуться обратно

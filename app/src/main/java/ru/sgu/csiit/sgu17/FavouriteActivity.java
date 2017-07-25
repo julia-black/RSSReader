@@ -24,7 +24,21 @@ public class FavouriteActivity extends AppCompatActivity implements NewsListFrag
 
     @Override
     public void OnArticleClicked(Article article) {
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
+            boolean flagFavourite = true;
+            PreviewFragment fragment = new PreviewFragment(article, flagFavourite);
+            getFragmentManager().beginTransaction()
+                    .add(R.id.containerFavourite, fragment) //добавляем в контейнер
+                    .addToBackStack(null) //чтобы можно было нажать назад и вернуться обратно
+                    .commit();
+        }
+        else {
+            WebFragment f = (WebFragment) getFragmentManager()
+                    .findFragmentById(R.id.preview_fragment);
+            f.getArguments().putString("url", article.link.split(" ")[0]);
+            f.reload();
+        }
     }
 
     @Override
@@ -36,32 +50,4 @@ public class FavouriteActivity extends AppCompatActivity implements NewsListFrag
     public void OnFavouriteListClicked() {
 
     }
-
-    // @Override
-  // public void OnArticleClicked(Article article) {
-  //     if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-
-  //         PreviewFragment fragment = new PreviewFragment(article);
-  //         getFragmentManager().beginTransaction()
-  //                 .add(R.id.container, fragment)
-  //                 .addToBackStack(null)
-  //                 .commit();
-  //     }
-  //     else {
-  //         WebFragment f = (WebFragment) getFragmentManager()
-  //                 .findFragmentById(R.id.preview_fragment);
-  //         f.getArguments().putString("url", article.link.split(" ")[0]);
-  //         f.reload();
-  //     }
-  // }
-
-  // @Override
-  // public void OnPreferencesClicked() {
-  //     PrefsFragment f = new PrefsFragment();
-  //     getFragmentManager().beginTransaction()
-  //             .add(R.id.container, f)
-  //             .addToBackStack(null)
-  //             .commit();
-  // }
-
 }

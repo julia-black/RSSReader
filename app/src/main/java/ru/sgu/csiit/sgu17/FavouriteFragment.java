@@ -2,7 +2,9 @@ package ru.sgu.csiit.sgu17;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.Loader;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,6 +17,9 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ru.sgu.csiit.sgu17.db.SguDbContract;
+import ru.sgu.csiit.sgu17.db.SguDbHelper;
 
 /**
  * Created by Juli on 20.07.2017.
@@ -29,9 +34,6 @@ public class FavouriteFragment extends Fragment
 
     private NewsItemAdapter dataAdapter;
 
-    public static void addFavourite(Article article){
-        favouriteArticles.add(article);
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,6 @@ public class FavouriteFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.favourite_list_fragment, container, false);
-
         ListView newsList = (ListView) v.findViewById(R.id.favourite_list);
         newsList.setAdapter(dataAdapter);
 
@@ -58,15 +59,11 @@ public class FavouriteFragment extends Fragment
                 }
             }
         });
-        if(favouriteArticles.size() > 0 ){
-            v.findViewById(R.id.textNotFavourite).setVisibility(View.GONE);
-        }
-        else {
-            v.findViewById(R.id.textNotFavourite).setVisibility(View.VISIBLE);
-        }
         getLoaderManager().initLoader(0, null, this);
         return v;
     }
+
+
     @Override
     public Loader<List<Article>> onCreateLoader(int id, Bundle args) {
          Log.d(LOG_TAG, "onCreateLoader");
@@ -75,22 +72,21 @@ public class FavouriteFragment extends Fragment
 
     @Override
     public void onLoadFinished(Loader<List<Article>> loader, List<Article> data) {
-      Log.d(LOG_TAG, "onLoadFinished " + loader.hashCode());
-     //  favouriteArticles.clear();
-     //  favouriteArticles.addAll(data);
-     //  Log.i(LOG_TAG, favouriteArticles.size() + "");
-       // if(favouriteArticles.size() > 0 ){
-       //     getView().findViewById(R.id.textNotFavourite).setVisibility(View.GONE);
-       // }
-       // else {
-       //     getView().findViewById(R.id.textNotFavourite).setVisibility(View.VISIBLE);
-       // }
-      // dataAdapter.notifyDataSetChanged();
+       Log.d(LOG_TAG, "onLoadFinished " + loader.hashCode());
+       favouriteArticles.clear();
+       favouriteArticles.addAll(data);
+       Log.i(LOG_TAG, favouriteArticles.size() + "");
+       if(favouriteArticles.size() > 0 ){
+           getView().findViewById(R.id.textNotFavourite).setVisibility(View.GONE);
+       }
+       else {
+           getView().findViewById(R.id.textNotFavourite).setVisibility(View.VISIBLE);
+       }
+       dataAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoaderReset(Loader<List<Article>> loader) {
         Log.d(LOG_TAG, "onResetLoader");
-        //favouriteArticles = null;
     }
 }

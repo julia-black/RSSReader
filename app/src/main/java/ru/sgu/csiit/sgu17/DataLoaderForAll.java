@@ -75,31 +75,6 @@ public class DataLoaderForAll extends AsyncTaskLoader<List<Article>> {
             e.printStackTrace();
         }
         return data;
-      //  List<Article> res = null;
-      //  SQLiteDatabase db = new SguDbHelper(getContext()).getReadableDatabase();
-      //  Cursor cursor = db.query(SguDbContract.TABLE_NAME, new String[]{
-      //          SguDbContract.COLUMN_TITLE,
-      //          SguDbContract.COLUMN_DESCRIPTION,
-      //          SguDbContract.COLUMN_PUBDATE,
-      //          SguDbContract.COLUMN_LINK
-      //  }, null, null, null, null, SguDbContract.COLUMN_PUBDATE + " DESC");
-      //  try {
-      //      res = new ArrayList<>();
-      //      while (cursor.moveToNext()) {
-      //          Article article = new Article();
-      //          article.title = cursor.getString(0);
-      //          article.description = cursor.getString(1);
-      //          article.pubDate = cursor.getString(2);
-      //          article.link = cursor.getString(3);
-//
-      //          res.add(article);
-      //      }
-      //  } finally {
-      //      cursor.close();
-      //      db.close();
-      //  }
-      //  Log.d(LOG_TAG, "load finished");
-      //  return res;
     }
 
     @Override
