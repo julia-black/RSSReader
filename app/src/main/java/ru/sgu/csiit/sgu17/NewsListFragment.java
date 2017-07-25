@@ -10,6 +10,7 @@ import android.content.Loader;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ public class NewsListFragment extends Fragment
     private static final String LOG_TAG = "NewsListActivity";
 
     private final RefreshBroadcastReceiver refreshBroadcastReceiver = new RefreshBroadcastReceiver();
-    private final ArrayList<Article> data = new ArrayList<>();
+    public static List<Article> data = new ArrayList<>();
     private NewsItemAdapter dataAdapter;
 
 
@@ -60,7 +62,6 @@ public class NewsListFragment extends Fragment
         void OnArticleClicked(Article article);
         void OnPreferencesClicked();
         void OnFavouriteListClicked();
-      //  void OnAddFavouriteClicked();
     }
 
     @Override
@@ -88,16 +89,14 @@ public class NewsListFragment extends Fragment
                 }
             }
         });
-
-
-
         swipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefresh);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
-
         getLoaderManager().initLoader(0, null, this);
         return v;
     }
+
+
 
     @Override
     public void onStart() {
@@ -115,7 +114,8 @@ public class NewsListFragment extends Fragment
     @Override
     public Loader<List<Article>> onCreateLoader(int id, Bundle args) {
         Log.d(LOG_TAG, "onCreateLoader");
-        return new SguRssLoader(getActivity());
+        //return new SguRssLoader(getActivity());
+        return new DataLoaderForAll(getActivity());
     }
 
     @Override
@@ -123,6 +123,13 @@ public class NewsListFragment extends Fragment
         Log.d(LOG_TAG, "onLoadFinished " + loader.hashCode());
         data.clear();
         data.addAll(loaderData);
+        Log.i(LOG_TAG, dataAdapter.getSizeArray() + " count");
+        if(dataAdapter.getSizeArray() > 0 ){
+            getView().findViewById(R.id.textNotArticles).setVisibility(View.GONE);
+        }
+        else {
+                getView().findViewById(R.id.textNotArticles).setVisibility(View.VISIBLE);
+        }
         dataAdapter.notifyDataSetChanged();
     }
 

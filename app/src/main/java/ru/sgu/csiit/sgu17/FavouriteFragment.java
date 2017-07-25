@@ -3,8 +3,17 @@ package ru.sgu.csiit.sgu17;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.Loader;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,18 +22,75 @@ import java.util.List;
 
 public class FavouriteFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<List<Article>> {
+
+    private static final String LOG_TAG = "FavouriteFragment";
+
+    public static List<Article> favouriteArticles = new ArrayList<>();
+
+    private NewsItemAdapter dataAdapter;
+
+    public static void addFavourite(Article article){
+        favouriteArticles.add(article);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.dataAdapter = new NewsItemAdapter(getActivity(), favouriteArticles);
+        getLoaderManager().initLoader(0, null, this);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.favourite_list_fragment, container, false);
+
+        ListView newsList = (ListView) v.findViewById(R.id.favourite_list);
+        newsList.setAdapter(dataAdapter);
+
+        newsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Article article = (Article) parent.getItemAtPosition(position);
+                if (isResumed()) {
+                    NewsListFragment.Listener l = (NewsListFragment.Listener) getActivity();
+                    l.OnArticleClicked(article);
+                }
+            }
+        });
+        if(favouriteArticles.size() > 0 ){
+            v.findViewById(R.id.textNotFavourite).setVisibility(View.GONE);
+        }
+        else {
+            v.findViewById(R.id.textNotFavourite).setVisibility(View.VISIBLE);
+        }
+        getLoaderManager().initLoader(0, null, this);
+        return v;
+    }
     @Override
     public Loader<List<Article>> onCreateLoader(int id, Bundle args) {
-        return null;
+         Log.d(LOG_TAG, "onCreateLoader");
+         return new SguRssLoader(getActivity());
     }
 
     @Override
     public void onLoadFinished(Loader<List<Article>> loader, List<Article> data) {
-
+      Log.d(LOG_TAG, "onLoadFinished " + loader.hashCode());
+     //  favouriteArticles.clear();
+     //  favouriteArticles.addAll(data);
+     //  Log.i(LOG_TAG, favouriteArticles.size() + "");
+       // if(favouriteArticles.size() > 0 ){
+       //     getView().findViewById(R.id.textNotFavourite).setVisibility(View.GONE);
+       // }
+       // else {
+       //     getView().findViewById(R.id.textNotFavourite).setVisibility(View.VISIBLE);
+       // }
+      // dataAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onLoaderReset(Loader<List<Article>> loader) {
-
+        Log.d(LOG_TAG, "onResetLoader");
+        //favouriteArticles = null;
     }
 }

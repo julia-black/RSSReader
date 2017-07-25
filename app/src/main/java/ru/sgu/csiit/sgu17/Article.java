@@ -7,5 +7,4 @@ public final class Article {
     public String pubDate;
     public String link;
     public long guid;
-    //public String urlImage;
 }

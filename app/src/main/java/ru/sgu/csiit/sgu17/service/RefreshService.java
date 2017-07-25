@@ -23,11 +23,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.sgu.csiit.sgu17.Article;
 import ru.sgu.csiit.sgu17.NetUtils;
 import ru.sgu.csiit.sgu17.NewsListActivity;
+import ru.sgu.csiit.sgu17.NewsListFragment;
 import ru.sgu.csiit.sgu17.R;
 import ru.sgu.csiit.sgu17.RssUtils;
 import ru.sgu.csiit.sgu17.db.SguDbContract;
@@ -53,7 +55,8 @@ public class RefreshService extends Service {
                     loadAllowed = isPeriodicUpdatesEnabled();
                     loadAllowed = loadAllowed && (!isWiFiOnly() || isWifiConnected());
                     if (loadAllowed) {
-                        loadData();
+                        NewsListFragment.data = loadData();
+
                     }
                     Thread.sleep(10_000);
                 } catch (InterruptedException e) {
@@ -98,14 +101,13 @@ public class RefreshService extends Service {
         sendDataRefreshedNotification();
     }
 
-    private void loadData() {
+    private List<Article> loadData(){
         mainHandler.post(new Runnable() {
             @Override
             public void run() {
                 showInProgressNotification();
             }
         });
-
         List<Article> netData = null;
         try {
             String httpResponse = NetUtils.httpGet(URL);
@@ -115,36 +117,11 @@ public class RefreshService extends Service {
         } catch (XmlPullParserException e) {
             Log.e(LOG_TAG, "Failed to parse RSS: " + e.getMessage(), e);
         }
-        // Load object into the database.
-        SQLiteDatabase db = new SguDbHelper(RefreshService.this).getWritableDatabase();
-        db.beginTransaction();
-        try {
-            if (netData != null) {
-                for (Article a : netData) {
-                    ContentValues cv = new ContentValues();
-                    cv.put(SguDbContract.COLUMN_GUID, a.guid);
-                    cv.put(SguDbContract.COLUMN_TITLE, a.title);
-                    cv.put(SguDbContract.COLUMN_DESCRIPTION, a.description);
-                    cv.put(SguDbContract.COLUMN_LINK, a.link);
-                    cv.put(SguDbContract.COLUMN_PUBDATE, a.pubDate);
-                    long insertedId = db.insertWithOnConflict(SguDbContract.TABLE_NAME,
-                            null, cv, SQLiteDatabase.CONFLICT_IGNORE);
-                    if (insertedId == -1L)
-                        Log.i(LOG_TAG, "skipped article guid=" + a.guid);
-                }
-            }
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-            db.close();
-        }
-
         try {
             Thread.sleep(5_000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         mainHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -152,7 +129,66 @@ public class RefreshService extends Service {
                 onPostRefresh();
             }
         });
+        return netData;
     }
+
+
+   //private void loadData() {
+   //    mainHandler.post(new Runnable() {
+   //        @Override
+   //        public void run() {
+   //            showInProgressNotification();
+   //        }
+   //    });
+
+   //    List<Article> netData = null;
+   //    try {
+   //        String httpResponse = NetUtils.httpGet(URL);
+   //        netData = RssUtils.parseRss(httpResponse);
+   //    } catch (IOException e) {
+   //        Log.e(LOG_TAG, "Failed to get HTTP response: " + e.getMessage(), e);
+   //    } catch (XmlPullParserException e) {
+   //        Log.e(LOG_TAG, "Failed to parse RSS: " + e.getMessage(), e);
+   //    }
+   //
+   //    // Load object into the database.
+   //   // SQLiteDatabase db = new SguDbHelper(RefreshService.this).getWritableDatabase();
+   //   // db.beginTransaction();
+   //   // try {
+   //   //     if (netData != null) {
+   //   //         for (Article a : netData) {
+   //   //             ContentValues cv = new ContentValues();
+   //   //             cv.put(SguDbContract.COLUMN_GUID, a.guid);
+   //   //             cv.put(SguDbContract.COLUMN_TITLE, a.title);
+   //   //             cv.put(SguDbContract.COLUMN_DESCRIPTION, a.description);
+   //   //             cv.put(SguDbContract.COLUMN_LINK, a.link);
+   //   //             cv.put(SguDbContract.COLUMN_PUBDATE, a.pubDate);
+   //   //             long insertedId = db.insertWithOnConflict(SguDbContract.TABLE_NAME,
+   //   //                     null, cv, SQLiteDatabase.CONFLICT_IGNORE);
+   //   //             if (insertedId == -1L)
+   //   //                 Log.i(LOG_TAG, "skipped article guid=" + a.guid);
+   //   //         }
+   //   //     }
+   //   //     db.setTransactionSuccessful();
+   //   // } finally {
+   //   //     db.endTransaction();
+   //   //     db.close();
+   //   // }
+
+   //    try {
+   //        Thread.sleep(5_000);
+   //    } catch (InterruptedException e) {
+   //        e.printStackTrace();
+   //    }
+
+   //    mainHandler.post(new Runnable() {
+   //        @Override
+   //        public void run() {
+   //            hideInProgressNotification();
+   //            onPostRefresh();
+   //        }
+   //    });
+   //}
 
     private void sendDataRefreshedNotification() {
         //интент который нах-ся "в производстве", он используется, чтобы появлялся интент только по нажатию

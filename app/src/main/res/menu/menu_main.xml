@@ -14,12 +14,5 @@
         android:orderInCategory="101"
         android:title="@string/action_favoriteList"/>
 
-    <item
-        app:showAsAction="always"
-        android:id="@+id/action_favorite"
-        android:icon="@drawable/favorite"
-       android:layout_width="64dp"
-        />
-
 
 </menu>

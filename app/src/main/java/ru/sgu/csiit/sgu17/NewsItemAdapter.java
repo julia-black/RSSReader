@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 class NewsItemAdapter extends BaseAdapter {
@@ -22,6 +24,11 @@ class NewsItemAdapter extends BaseAdapter {
         this.inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
+    public int getSizeArray(){
+        return data.size();
+    }
+
 
     @Override
     public int getCount() {
@@ -57,8 +64,12 @@ class NewsItemAdapter extends BaseAdapter {
         ViewHolder holder = (ViewHolder) v.getTag();
         holder.titleView.setText(art.title);
         holder.pubDateView.setText(art.pubDate);
-        LoadImage loadImage = new LoadImage(art.link.split(" ")[1], holder.imageNews);
-        loadImage.execute();
+
+        String urlImage = art.link.split(" ")[1];
+        Glide.with(context)
+                .load(urlImage)
+                .into(holder.imageNews);
+
         return v;
     }
 

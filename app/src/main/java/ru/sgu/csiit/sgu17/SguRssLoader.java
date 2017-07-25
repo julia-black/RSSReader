@@ -20,7 +20,7 @@ import ru.sgu.csiit.sgu17.service.RefreshService;
 
 final class SguRssLoader extends AsyncTaskLoader<List<Article>> {
 
-    private static final String URL = "http://www.sgu.ru/news.xml";
+    //private static final String URL = "http://www.sgu.ru/news.xml";
     private static final String LOG_TAG = "SguRssLoader";
 
     private List<Article> data;
@@ -41,7 +41,6 @@ final class SguRssLoader extends AsyncTaskLoader<List<Article>> {
     @Override
     public List<Article> loadInBackground() {
         List<Article> res = null;
-
         SQLiteDatabase db = new SguDbHelper(getContext()).getReadableDatabase();
         Cursor cursor = db.query(SguDbContract.TABLE_NAME, new String[]{
                 SguDbContract.COLUMN_TITLE,

@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class SguDbHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "sgudb.sqlite1";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 4;
 
     public SguDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);

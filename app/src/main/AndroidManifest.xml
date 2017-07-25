@@ -22,11 +22,9 @@
         </activity>
 
         <activity android:name=".NewsListActivity">
-
         </activity>
 
         <activity android:name=".FavouriteActivity">
-
         </activity>
 
         <service

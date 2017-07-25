@@ -28,7 +28,7 @@ public final class RssUtils {
             String urlImage = "";
             if ("item".equals(name)) {
                 parser.require(XmlPullParser.START_TAG, null, "item");
-                Log.i("UriDataLoader", "Found item " + parser.getText());
+                //Log.i("UriDataLoader", "Found item " + parser.getText());
 
                 Article article = new Article();
                 while (parser.next() != XmlPullParser.END_TAG) {
@@ -49,12 +49,14 @@ public final class RssUtils {
                         //article.urlImage = parser.getAttributeValue(0);
                         urlImage = parser.getAttributeValue(0);
                         article.link += " " + urlImage;
+                        parser.nextText();
                     }
                     else {
                         skipTag(parser);
                     }
                 }
-                res.add(article);
+                if(!existGuid(res, article.guid))
+                    res.add(article);
 
             } else {
                 skipTag(parser);
@@ -62,6 +64,15 @@ public final class RssUtils {
         }
 
         return res;
+    }
+
+    private static boolean existGuid(List<Article> articles, long guid){
+        for (int i = 0; i< articles.size(); i++){
+            if(articles.get(i).guid == guid){
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void skipTag(XmlPullParser parser) throws XmlPullParserException, IOException {
