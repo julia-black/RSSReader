@@ -14,5 +14,4 @@
         android:orderInCategory="101"
         android:title="@string/action_favoriteList"/>
 
-
 </menu>

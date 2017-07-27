@@ -3,6 +3,7 @@ package ru.sgu.csiit.sgu17;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -10,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,27 @@ import java.util.List;
 public class FavouriteActivity extends AppCompatActivity implements FavouriteFragment.Listener{
 
     private static final String LOG_TAG = "FavouriteActivity";
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_favourite, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_newsBlog){
+            OnNewsBlogClicked();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void OnNewsBlogClicked() {
+        Log.i(LOG_TAG, "click on News Blog");
+        Intent intent = new Intent(FavouriteActivity.this, NewsListActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

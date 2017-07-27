@@ -39,6 +39,8 @@ public class NewsListFragment extends Fragment
     public static List<Article> data = new ArrayList<>();
     private NewsItemAdapter dataAdapter;
 
+    public NewsListFragment() {
+    }
 
     @Override
     public void onRefresh() {
@@ -62,6 +64,7 @@ public class NewsListFragment extends Fragment
         void OnArticleClicked(Article article);
         void OnPreferencesClicked();
         void OnFavouriteListClicked();
+        void OnNewsListClicked();
     }
 
     @Override
@@ -78,7 +81,7 @@ public class NewsListFragment extends Fragment
 
         ListView newsList = (ListView) v.findViewById(R.id.news_list);
         newsList.setAdapter(dataAdapter);
-
+        v.findViewById(R.id.textNotArticles).setVisibility(View.GONE);
         newsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -93,6 +96,7 @@ public class NewsListFragment extends Fragment
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
         getLoaderManager().initLoader(0, null, this);
+
         return v;
     }
 
@@ -124,6 +128,7 @@ public class NewsListFragment extends Fragment
         data.clear();
         data.addAll(loaderData);
         Log.i(LOG_TAG, dataAdapter.getSizeArray() + " count");
+
         if(dataAdapter.getSizeArray() > 0 ){
             getView().findViewById(R.id.textNotArticles).setVisibility(View.GONE);
         }

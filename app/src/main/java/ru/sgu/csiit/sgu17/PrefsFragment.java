@@ -2,20 +2,71 @@ package ru.sgu.csiit.sgu17;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableContainer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+
+import com.mikepenz.iconics.typeface.FontAwesome;
+import com.mikepenz.materialdrawer.Drawer;
 
 public class PrefsFragment extends Fragment {
 
     private Switch wifiOnlySwitch;
     private Switch notificationSwitch;
     private Switch periodicUpdates;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if(menu.size() == 2) {
+            inflater.inflate(R.menu.menu_favourite, menu);
+            super.onCreateOptionsMenu(menu, inflater);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_favorite){
+            onFavouriteListClicked();
+        }
+        else if(id == R.id.action_newsBlog){
+            onNewsBlogClicked();
+        }
+        else
+            if(id == R.id.action_settings){
+
+            }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void onNewsBlogClicked() {
+        Intent intent = new Intent(this.getActivity(), NewsListActivity.class);
+        startActivity(intent);
+    }
+
+    private void onFavouriteListClicked() {
+        Intent intent = new Intent(this.getActivity(), FavouriteActivity.class);
+        startActivity(intent);
+    }
+
 
     @Nullable
     @Override

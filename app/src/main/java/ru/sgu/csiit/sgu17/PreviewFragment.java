@@ -88,6 +88,7 @@ public class PreviewFragment extends Fragment {
     public void onReadMoreClicked(){
         WebFragment webFragment = new WebFragment();
         webFragment.getArguments().putString("url", article.link.split(" ")[0]);
+
         if(flagFavourite){
            getFragmentManager().beginTransaction()
                    .add(R.id.containerFavourite, webFragment)
@@ -96,7 +97,7 @@ public class PreviewFragment extends Fragment {
        }
         else {
             getFragmentManager().beginTransaction()
-                    .add(R.id.containerFavourite, webFragment)
+                    .add(R.id.container, webFragment)
                     .addToBackStack(null)
                     .commit();
        }
@@ -143,7 +144,7 @@ public class PreviewFragment extends Fragment {
            getFragmentManager().beginTransaction()
                    .remove(this)
                    .add(R.id.containerFavourite, fragment)
-                   .addToBackStack(null)
+                   //.addToBackStack(null)
                    .commit();
         }
     }

@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    tools:context=".NewsListActivity">
+
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,24 +19,42 @@
         android:orientation="vertical">
 
         <Switch
-            android:id="@+id/periodic_updates_sw"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/pref_periodic_updates_title" />
-
-        <Switch
+            android:drawableLeft="@drawable/data"
             android:id="@+id/wi_fi_only_sw"
+            android:textColor="#de000000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:text="@string/pref_wi_fi_only_title" />
 
         <Switch
-            android:id="@+id/notifications_sw"
+            android:drawableLeft="@drawable/location"
+            android:id="@+id/use_lockation"
+            android:layout_margin="10dp"
+            android:textColor="#de000000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/use_location" />
+        <Switch
+            android:drawableLeft="@drawable/notification"
+            android:id="@+id/notifications_sw"
+            android:textColor="#de000000"
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:layout_height="wrap_content"
             android:text="@string/pref_notifications_title" />
+
+        <Switch
+            android:drawableLeft="@drawable/update"
+            android:id="@+id/periodic_updates_sw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textColor="#de000000"
+            android:text="@string/pref_periodic_updates_title"/>
 
     </LinearLayout>
 
 </ScrollView>
 
+</RelativeLayout>
