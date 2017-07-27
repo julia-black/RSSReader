@@ -53,12 +53,21 @@ public class NewsListActivity extends AppCompatActivity
     public void OnArticleClicked(Article article) {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-           boolean flagFavourite = false;
-           PreviewFragment fragment = new PreviewFragment(article, flagFavourite);
-           getFragmentManager().beginTransaction()
-                    .add(R.id.container, fragment) //добавляем в контейнер
-                    .addToBackStack(null) //чтобы можно было нажать назад и вернуться обратно
-                    .commit();
+            Log.i(LOG_TAG, "click on Article");
+           //boolean flagFavourite = false;
+           PreviewFragment fragment = new PreviewFragment(article, false);
+
+           // if(flagFavourite){
+           //     getFragmentManager().beginTransaction()
+           //             .add(R.id.containerFavourite, fragment)
+           //             .addToBackStack(null)
+           //             .commit();
+           // } else {
+                getFragmentManager().beginTransaction()
+                        .add(R.id.container, fragment) //добавляем в контейнер
+                        .addToBackStack(null) //чтобы можно было нажать назад и вернуться обратно
+                        .commit();
+           // }
         }
         else {
             WebFragment f = (WebFragment) getFragmentManager()

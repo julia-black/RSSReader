@@ -21,19 +21,18 @@ import java.util.List;
 import ru.sgu.csiit.sgu17.db.SguDbContract;
 import ru.sgu.csiit.sgu17.db.SguDbHelper;
 
-/**
- * Created by Juli on 20.07.2017.
- */
 
 public class FavouriteFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<List<Article>> {
 
     private static final String LOG_TAG = "FavouriteFragment";
 
+    public interface Listener {
+        void OnArticleClicked(Article article);
+    }
     public static List<Article> favouriteArticles = new ArrayList<>();
 
     private NewsItemAdapter dataAdapter;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,7 +53,7 @@ public class FavouriteFragment extends Fragment
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Article article = (Article) parent.getItemAtPosition(position);
                 if (isResumed()) {
-                    NewsListFragment.Listener l = (NewsListFragment.Listener) getActivity();
+                    Listener l = (Listener) getActivity();
                     l.OnArticleClicked(article);
                 }
             }
@@ -62,7 +61,6 @@ public class FavouriteFragment extends Fragment
         getLoaderManager().initLoader(0, null, this);
         return v;
     }
-
 
     @Override
     public Loader<List<Article>> onCreateLoader(int id, Bundle args) {
@@ -76,6 +74,7 @@ public class FavouriteFragment extends Fragment
        favouriteArticles.clear();
        favouriteArticles.addAll(data);
        Log.i(LOG_TAG, favouriteArticles.size() + "");
+
        if(favouriteArticles.size() > 0 ){
            getView().findViewById(R.id.textNotFavourite).setVisibility(View.GONE);
        }

@@ -29,12 +29,11 @@ public class PreviewFragment extends Fragment {
     private Article article;
     private boolean flagFavourite;
 
-
-    public PreviewFragment(Article article, boolean flagFavourite) {
-        this.flagFavourite = flagFavourite;
-        this.article = article;
-        setArguments(new Bundle());
-    }
+   public PreviewFragment(Article article, boolean flagFavourite) {
+       this.flagFavourite = flagFavourite;
+       this.article = article;
+       setArguments(new Bundle());
+   }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
@@ -47,7 +46,6 @@ public class PreviewFragment extends Fragment {
         inflater.inflate(R.menu.menu_preview, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -62,6 +60,7 @@ public class PreviewFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.preview_article, container, false);
 
+        Log.i(LOG_TAG, "article = " + article.guid);
 
         this.textTitle = (TextView) v.findViewById(R.id.title_article);
         this.textDescript = (TextView) v.findViewById(R.id.description);
@@ -90,60 +89,62 @@ public class PreviewFragment extends Fragment {
         WebFragment webFragment = new WebFragment();
         webFragment.getArguments().putString("url", article.link.split(" ")[0]);
         if(flagFavourite){
+           getFragmentManager().beginTransaction()
+                   .add(R.id.containerFavourite, webFragment)
+                   .addToBackStack(null)
+                   .commit();
+       }
+        else {
             getFragmentManager().beginTransaction()
                     .add(R.id.containerFavourite, webFragment)
                     .addToBackStack(null)
                     .commit();
-        }
-        else {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, webFragment)
-                    .addToBackStack(null)
-                    .commit();
-        }
+       }
     }
 
     public void onFavouriteClicked() {
         //если мы находимся просто в превью, а не в превью фаворита, то нажатие на сердечко вызывает добавление фаворита
         //иначе - удаление из фаворитов
-        SQLiteDatabase db = new SguDbHelper(getActivity()).getWritableDatabase();
-        db.beginTransaction();
-        if(!flagFavourite)
-        {
-            try {
-                ContentValues cv = new ContentValues();
-                cv.put(SguDbContract.COLUMN_GUID, article.guid);
-                cv.put(SguDbContract.COLUMN_TITLE, article.title);
-                cv.put(SguDbContract.COLUMN_DESCRIPTION, article.description);
-                cv.put(SguDbContract.COLUMN_LINK, article.link);
-                cv.put(SguDbContract.COLUMN_PUBDATE, article.pubDate);
-                long insertedId = db.insertWithOnConflict(SguDbContract.TABLE_NAME,
-                        null, cv, SQLiteDatabase.CONFLICT_IGNORE);
-                if (insertedId == -1L)
-                    Log.i(LOG_TAG, "skipped article guid = " + article.guid);
-                db.setTransactionSuccessful();
-                Log.i(LOG_TAG, "Success adding in DB");
-            } finally {
-                db.endTransaction();
-                db.close();
-            }
-            Log.i(LOG_TAG, "Add favourite " + article.title);
+       SQLiteDatabase db = new SguDbHelper(getActivity()).getWritableDatabase();
+       db.beginTransaction();
+       if(!flagFavourite)
+       {
+           try {
+               ContentValues cv = new ContentValues();
+               cv.put(SguDbContract.COLUMN_GUID, article.guid);
+               cv.put(SguDbContract.COLUMN_TITLE, article.title);
+               cv.put(SguDbContract.COLUMN_DESCRIPTION, article.description);
+               cv.put(SguDbContract.COLUMN_LINK, article.link);
+               cv.put(SguDbContract.COLUMN_PUBDATE, article.pubDate);
+
+               long insertedId = db.insertWithOnConflict(SguDbContract.TABLE_NAME,
+                       null, cv, SQLiteDatabase.CONFLICT_IGNORE);
+               if (insertedId == -1L)
+                   Log.i(LOG_TAG, "skipped article guid = " + article.guid);
+               db.setTransactionSuccessful();
+               Log.i(LOG_TAG, "Success adding in DB");
+           } finally {
+               db.endTransaction();
+               db.close();
+           }
+           Log.i(LOG_TAG, "Add favourite " + article.guid);
         }
         else {
             try {
-                int delCount = db.delete(SguDbContract.TABLE_NAME, SguDbContract.COLUMN_GUID + "=" + article.guid, null);
+                int delCount = db.delete(SguDbContract.TABLE_NAME, SguDbContract.COLUMN_LINK + "='" + article.link + "'", null);
                 db.setTransactionSuccessful();
-                Log.i(LOG_TAG, "Success deleting in DB, countDel string = " + delCount);
+                Log.i(LOG_TAG, "Count deleting strings = " + delCount);
             } finally {
                 db.endTransaction();
                 db.close();
             }
-           //FavouriteFragment fragment = new FavouriteFragment();
-           //getFragmentManager().beginTransaction()
-           //        .add(R.id.containerFavourite, fragment) //добавляем в контейнер
-           //        .addToBackStack(null) //чтобы можно было нажать назад и вернуться обратно
-           //        .commit();
-           // Log.i(LOG_TAG, "Add favourite " + article.title);
+
+           FavouriteFragment fragment = new FavouriteFragment();
+           getFragmentManager().beginTransaction()
+                   .remove(this)
+                   .add(R.id.containerFavourite, fragment)
+                   .addToBackStack(null)
+                   .commit();
         }
     }
 }
