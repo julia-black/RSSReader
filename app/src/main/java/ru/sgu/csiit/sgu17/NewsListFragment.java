@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -45,6 +46,10 @@ public class NewsListFragment extends Fragment
     @Override
     public void onRefresh() {
        Intent serviceIntent = new Intent(getActivity(), RefreshService.class);
+        getActivity().getPreferences(Context.MODE_PRIVATE)
+                .edit()
+                .putBoolean("refresh", true)
+                .apply();
        getActivity().startService(serviceIntent);
        swipeRefreshLayout.setRefreshing(false);
     }
@@ -79,6 +84,10 @@ public class NewsListFragment extends Fragment
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.news_list_fragment, container, false);
 
+        Toolbar toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
+        if(toolbar != null) {
+            toolbar.setTitle(R.string.action_newsBlog);
+        }
         ListView newsList = (ListView) v.findViewById(R.id.news_list);
         newsList.setAdapter(dataAdapter);
         v.findViewById(R.id.textNotArticles).setVisibility(View.GONE);
@@ -127,7 +136,7 @@ public class NewsListFragment extends Fragment
         Log.d(LOG_TAG, "onLoadFinished " + loader.hashCode());
         data.clear();
         data.addAll(loaderData);
-        Log.i(LOG_TAG, dataAdapter.getSizeArray() + " count");
+       // Log.i(LOG_TAG, dataAdapter.getSizeArray() + " count");
 
         if(dataAdapter.getSizeArray() > 0 ){
             getView().findViewById(R.id.textNotArticles).setVisibility(View.GONE);

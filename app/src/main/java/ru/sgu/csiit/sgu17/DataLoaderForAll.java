@@ -21,10 +21,6 @@ import java.util.List;
 import ru.sgu.csiit.sgu17.db.SguDbContract;
 import ru.sgu.csiit.sgu17.db.SguDbHelper;
 
-/**
- * Created by Juli on 21.07.2017.
- */
-
 public class DataLoaderForAll extends AsyncTaskLoader<List<Article>> {
 
     private static final String URL = "http://www.sgu.ru/news.xml";

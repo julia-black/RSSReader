@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -62,6 +63,10 @@ public class PreviewFragment extends Fragment {
 
         Log.i(LOG_TAG, "article = " + article.guid);
 
+        Toolbar toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
+        if(toolbar != null) {
+            toolbar.setTitle("Article");
+        }
         this.textTitle = (TextView) v.findViewById(R.id.title_article);
         this.textDescript = (TextView) v.findViewById(R.id.description);
         this.textDate = (TextView) v.findViewById(R.id.pub_date);

@@ -33,11 +33,6 @@ public class NewsListActivity extends AppCompatActivity
 
     private static final String LOG_TAG = "NewsListActivity";
 
-  // private String[] mItemTitles;
-  // private DrawerLayout mDrawerLayout;
-  // private ListView mDrawerListView;
-  // private ActionBarDrawerToggle mDrawerToggle;
-
     private Drawer.Result drawerResult = null;
 
     @Override
@@ -48,17 +43,27 @@ public class NewsListActivity extends AppCompatActivity
         setContentView(R.layout.news_list_activity); //обертка над фрагментом
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(toolbar != null) {
+            toolbar.setTitle(R.string.action_newsBlog);
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
 
         drawerResult = new Drawer()
                 .withActivity(this)
                 .withActionBarDrawerToggle(true)
                 .withToolbar(toolbar)
                 .withHeader(R.layout.drawer_header)
-                .addDrawerItems(new PrimaryDrawerItem().withName(R.string.drawer_item_news).withIcon(FontAwesome.Icon.faw_rss).withIdentifier(0),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_favour).withIcon(FontAwesome.Icon.faw_heart).withIdentifier(1),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_setting).withIcon(FontAwesome.Icon.faw_cog).withIdentifier(2)
+                .addDrawerItems(new PrimaryDrawerItem().withName(R.string.action_newsBlog).withIcon(FontAwesome.Icon.faw_rss).withIdentifier(0),
+                        new PrimaryDrawerItem().withName(R.string.action_favoriteList).withIcon(FontAwesome.Icon.faw_heart).withIdentifier(1),
+                        new PrimaryDrawerItem().withName(R.string.action_prefs).withIcon(FontAwesome.Icon.faw_cog).withIdentifier(2),
+                        new PrimaryDrawerItem().withName(""),
+                        new PrimaryDrawerItem().withName(""),
+                        new PrimaryDrawerItem().withName(""),
+                        new PrimaryDrawerItem().withName(""),
+                        new PrimaryDrawerItem().withName(""),
+                        new CustomPrimaryDrawerItem()
                 )
                 .withOnDrawerListener(new Drawer.OnDrawerListener() {
                     @Override
@@ -95,9 +100,20 @@ public class NewsListActivity extends AppCompatActivity
     }
 
     @Override
+    public void onBackPressed() {
+        // Закрываем Navigation Drawer по нажатию системной кнопки "Назад" если он открыт
+        if (drawerResult.isDrawerOpen()) {
+            drawerResult.closeDrawer();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -140,7 +156,7 @@ public class NewsListActivity extends AppCompatActivity
 
     @Override
     public void OnPreferencesClicked() {
-        PrefsFragment f = new PrefsFragment();
+        PrefsFragment f = new PrefsFragment(false);
         getFragmentManager().beginTransaction()
                 .add(R.id.container, f)
                 .addToBackStack(null)

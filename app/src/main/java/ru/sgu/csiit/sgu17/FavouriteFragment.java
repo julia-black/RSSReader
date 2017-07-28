@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,9 @@ public class FavouriteFragment extends Fragment
 
     public interface Listener {
         void OnArticleClicked(Article article);
+        void OnPreferencesClicked();
+        void OnFavouriteListClicked();
+        void OnNewsListClicked();
     }
     public static List<Article> favouriteArticles = new ArrayList<>();
 
@@ -48,6 +52,10 @@ public class FavouriteFragment extends Fragment
         ListView newsList = (ListView) v.findViewById(R.id.favourite_list);
         newsList.setAdapter(dataAdapter);
 
+        Toolbar toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
+        if(toolbar != null) {
+            toolbar.setTitle(R.string.action_favoriteList);
+        }
         newsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

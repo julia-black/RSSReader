@@ -8,12 +8,12 @@
     <string name="action_favoriteList">Favourite Articles</string>
     <string name="action_newsBlog">News Blog</string>
 
-
-
+   <!--
     <string name="drawer_item_news">News Blog</string>
     <string name="drawer_item_favour">Favourite Articles</string>
-    <string name="drawer_item_setting">Setting</string>
+    <string name="drawer_item_setting">Setting</string>-->
     <string name="use_location">Use Location</string>
+    <string name="update_frequency">Update frequency</string>
 
 
 </resources>

@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -51,17 +52,54 @@ public class RefreshService extends Service {
         public void run() {
             while (!Thread.interrupted()) {
                 try { //бесконечный цикл, чтобы если внешнй компонент запросит, мы не зависли
+
+                    int period = 10_000;
+                    if(!isRefresh()) { //если обновили пушем
+                        period = getPeriodUpdate();
+                        switch (period) {
+                            case 15:
+                                period = 15 * 60 * 1000; //переводим в милисекунды
+                                break;
+                            case 30:
+                                period = 30 * 60 * 1000;
+                                break;
+                            case 1:
+                                period = 3_600_000;
+                                break;
+                            case 0:
+                                period = 0;
+                                break;
+                        }
+                        Thread.sleep(period);
+                    }
+
                     boolean loadAllowed;
-                    loadAllowed = isPeriodicUpdatesEnabled();
+
+                    if(period == 0)
+                        loadAllowed = false;
+                    else
+                        loadAllowed = true;
+
                     loadAllowed = loadAllowed && (!isWiFiOnly() || isWifiConnected());
                     if (loadAllowed) {
+                        Log.i(LOG_TAG, "load data...");
                         NewsListFragment.data = loadData();
-
                     }
+                    //ставим обратно refresh = false
+                    SharedPreferences prefs = getSharedPreferences(
+                            NewsListActivity.class.getSimpleName(), MODE_PRIVATE);
+
+                    prefs
+                            .edit()
+                            .putBoolean("refresh", false)
+                            .apply();
+
+                    //Период обновления
                     Thread.sleep(10_000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
+               } catch (InterruptedException e) {
+                   e.printStackTrace();
+               }
             }
         }
     };
@@ -132,64 +170,6 @@ public class RefreshService extends Service {
         return netData;
     }
 
-
-   //private void loadData() {
-   //    mainHandler.post(new Runnable() {
-   //        @Override
-   //        public void run() {
-   //            showInProgressNotification();
-   //        }
-   //    });
-
-   //    List<Article> netData = null;
-   //    try {
-   //        String httpResponse = NetUtils.httpGet(URL);
-   //        netData = RssUtils.parseRss(httpResponse);
-   //    } catch (IOException e) {
-   //        Log.e(LOG_TAG, "Failed to get HTTP response: " + e.getMessage(), e);
-   //    } catch (XmlPullParserException e) {
-   //        Log.e(LOG_TAG, "Failed to parse RSS: " + e.getMessage(), e);
-   //    }
-   //
-   //    // Load object into the database.
-   //   // SQLiteDatabase db = new SguDbHelper(RefreshService.this).getWritableDatabase();
-   //   // db.beginTransaction();
-   //   // try {
-   //   //     if (netData != null) {
-   //   //         for (Article a : netData) {
-   //   //             ContentValues cv = new ContentValues();
-   //   //             cv.put(SguDbContract.COLUMN_GUID, a.guid);
-   //   //             cv.put(SguDbContract.COLUMN_TITLE, a.title);
-   //   //             cv.put(SguDbContract.COLUMN_DESCRIPTION, a.description);
-   //   //             cv.put(SguDbContract.COLUMN_LINK, a.link);
-   //   //             cv.put(SguDbContract.COLUMN_PUBDATE, a.pubDate);
-   //   //             long insertedId = db.insertWithOnConflict(SguDbContract.TABLE_NAME,
-   //   //                     null, cv, SQLiteDatabase.CONFLICT_IGNORE);
-   //   //             if (insertedId == -1L)
-   //   //                 Log.i(LOG_TAG, "skipped article guid=" + a.guid);
-   //   //         }
-   //   //     }
-   //   //     db.setTransactionSuccessful();
-   //   // } finally {
-   //   //     db.endTransaction();
-   //   //     db.close();
-   //   // }
-
-   //    try {
-   //        Thread.sleep(5_000);
-   //    } catch (InterruptedException e) {
-   //        e.printStackTrace();
-   //    }
-
-   //    mainHandler.post(new Runnable() {
-   //        @Override
-   //        public void run() {
-   //            hideInProgressNotification();
-   //            onPostRefresh();
-   //        }
-   //    });
-   //}
-
     private void sendDataRefreshedNotification() {
         //интент который нах-ся "в производстве", он используется, чтобы появлялся интент только по нажатию
         if (isNotificationsEnabled()) {
@@ -199,9 +179,10 @@ public class RefreshService extends Service {
             Notification notification = new Notification.Builder(this)
                     .setContentTitle("SGU RSS data refreshed")
                     .setContentText("Press notification to open")
+                    .setSmallIcon(R.drawable.icon)
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.icon))
                     .setContentIntent(notificationIntent)
                     .setAutoCancel(true)
-                    .setSmallIcon(R.drawable.sgu_main)
                     .build();
             NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             nm.notify(1, notification);
@@ -213,8 +194,9 @@ public class RefreshService extends Service {
             Notification notification = new Notification.Builder(this)
                     .setContentTitle("SGU RSS data is refreshing")
                     .setContentText("Wait until complete")
+                    .setSmallIcon(R.drawable.icon)
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.icon))
                     .setOngoing(true)
-                    .setSmallIcon(R.drawable.sgu_main)
                     .build();
             startForeground(1, notification);//1 - id
         }
@@ -249,5 +231,21 @@ public class RefreshService extends Service {
         return netInfo != null
                 && netInfo.isConnected()
                 && netInfo.getType() == ConnectivityManager.TYPE_WIFI;
+    }
+
+    private int getPeriodUpdate(){
+        SharedPreferences prefs = getSharedPreferences(
+                NewsListActivity.class.getSimpleName(), MODE_PRIVATE);
+        return prefs.getInt("periodUpdate", 0);
+    }
+    private boolean isUseLocation(){
+        SharedPreferences prefs = getSharedPreferences(
+                NewsListActivity.class.getSimpleName(), MODE_PRIVATE);
+        return prefs.getBoolean("location", false);
+    }
+    private boolean isRefresh(){
+        SharedPreferences prefs = getSharedPreferences(
+                NewsListActivity.class.getSimpleName(), MODE_PRIVATE);
+        return prefs.getBoolean("refresh", false);
     }
 }

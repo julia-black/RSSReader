@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    tools:context=".NewsListActivity">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:padding="36dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:padding="10dp"
+                    android:id="@+id/fifteen_min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Every 15 minutes"
+                    android:textColor="#de000000"
+                    />
+                <RadioButton
+                    android:padding="10dp"
+                    android:id="@+id/thirdty_min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Every 30 minutes"
+                    android:textColor="#de000000"
+                    />
+                <RadioButton
+                    android:padding="10dp"
+                    android:id="@+id/hour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Every hour"
+                    android:textColor="#de000000"
+                    />
+                <RadioButton
+                    android:padding="10dp"
+                    android:id="@+id/manually"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Manually"
+                    android:textColor="#de000000"
+                    />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
