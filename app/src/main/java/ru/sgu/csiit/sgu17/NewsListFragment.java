@@ -16,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -33,6 +35,8 @@ public class NewsListFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<List<Article>>, SwipeRefreshLayout.OnRefreshListener {
 
     private SwipeRefreshLayout swipeRefreshLayout;
+    private Toolbar toolbar;
+    MenuItem item;
 
     private static final String LOG_TAG = "NewsListActivity";
 
@@ -74,17 +78,20 @@ public class NewsListFragment extends Fragment
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.i(LOG_TAG, "on Create");
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         this.dataAdapter = new NewsItemAdapter(getActivity(), data);
         getLoaderManager().initLoader(0, null, this);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i(LOG_TAG, "on create view");
         View v = inflater.inflate(R.layout.news_list_fragment, container, false);
-
-        Toolbar toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
+        toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
         if(toolbar != null) {
             toolbar.setTitle(R.string.action_newsBlog);
         }
@@ -105,17 +112,27 @@ public class NewsListFragment extends Fragment
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
         getLoaderManager().initLoader(0, null, this);
-
         return v;
     }
 
-
-
     @Override
     public void onStart() {
+        Log.i(LOG_TAG, "on Start");
         super.onStart();
+        toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
+        if(toolbar != null) {
+            toolbar.setTitle(R.string.action_newsBlog);
+        }
         IntentFilter intentFilter = new IntentFilter(RefreshService.REFRESH_ACTION);
         getActivity().registerReceiver(refreshBroadcastReceiver, intentFilter);
+    }
+
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        Log.i(LOG_TAG, "on create menu");
+        inflater.inflate(R.menu.menu_main, menu);
+         item = menu.findItem(R.id.action_favorite_main);
+         item.setVisible(false);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -127,7 +144,6 @@ public class NewsListFragment extends Fragment
     @Override
     public Loader<List<Article>> onCreateLoader(int id, Bundle args) {
         Log.d(LOG_TAG, "onCreateLoader");
-        //return new SguRssLoader(getActivity());
         return new DataLoaderForAll(getActivity());
     }
 
@@ -136,8 +152,6 @@ public class NewsListFragment extends Fragment
         Log.d(LOG_TAG, "onLoadFinished " + loader.hashCode());
         data.clear();
         data.addAll(loaderData);
-       // Log.i(LOG_TAG, dataAdapter.getSizeArray() + " count");
-
         if(dataAdapter.getSizeArray() > 0 ){
             getView().findViewById(R.id.textNotArticles).setVisibility(View.GONE);
         }

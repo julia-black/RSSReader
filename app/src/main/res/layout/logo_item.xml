@@ -7,9 +7,8 @@
     <ImageView
         android:id="@+id/logo_mercury_dr"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:src="@drawable/logo_color"
         android:layout_centerHorizontal="true"
-        android:paddingLeft="70dp"
         />
 </LinearLayout>

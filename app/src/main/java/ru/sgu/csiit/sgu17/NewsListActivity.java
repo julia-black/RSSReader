@@ -2,11 +2,18 @@ package ru.sgu.csiit.sgu17;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +24,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,91 +40,133 @@ import com.mikepenz.materialdrawer.model.interfaces.Nameable;
 public class NewsListActivity extends AppCompatActivity
         implements NewsListFragment.Listener{
 
+    private DrawerLayout mDrawer;
+    private Toolbar toolbar;
+    private NavigationView nvDrawer;
+    public ActionBarDrawerToggle drawerToggle;
+    private boolean mToolBarNavigationListenerIsRegistered = false;
+
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        try {
+                            selectDrawerItem(menuItem);
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        } catch (InstantiationException e) {
+                            e.printStackTrace();
+                        }
+                        return true;
+                    }
+                });
+    }
+
+    public void selectDrawerItem(MenuItem menuItem) throws IllegalAccessException, InstantiationException {
+        switch(menuItem.getItemId()) {
+            case R.id.nav_first_fragment: {
+                OnNewsListClicked();
+                break;
+            }
+            case R.id.nav_second_fragment:
+                OnFavouriteListClicked();
+                break;
+            case R.id.nav_third_fragment:
+                OnPreferencesClicked();
+                break;
+            default:
+                break;
+        }
+        menuItem.setChecked(true);
+        mDrawer.closeDrawers();
+    }
+
     private static final String LOG_TAG = "NewsListActivity";
 
-    private Drawer.Result drawerResult = null;
-
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //сам определяет горзонт. или верт.
         setContentView(R.layout.news_list_activity); //обертка над фрагментом
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(toolbar != null) {
-            toolbar.setTitle(R.string.action_newsBlog);
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
-
-        drawerResult = new Drawer()
-                .withActivity(this)
-                .withActionBarDrawerToggle(true)
-                .withToolbar(toolbar)
-                .withHeader(R.layout.drawer_header)
-                .addDrawerItems(new PrimaryDrawerItem().withName(R.string.action_newsBlog).withIcon(FontAwesome.Icon.faw_rss).withIdentifier(0),
-                        new PrimaryDrawerItem().withName(R.string.action_favoriteList).withIcon(FontAwesome.Icon.faw_heart).withIdentifier(1),
-                        new PrimaryDrawerItem().withName(R.string.action_prefs).withIcon(FontAwesome.Icon.faw_cog).withIdentifier(2),
-                        new PrimaryDrawerItem().withName(""),
-                        new PrimaryDrawerItem().withName(""),
-                        new PrimaryDrawerItem().withName(""),
-                        new PrimaryDrawerItem().withName(""),
-                        new PrimaryDrawerItem().withName(""),
-                        new CustomPrimaryDrawerItem()
-                )
-                .withOnDrawerListener(new Drawer.OnDrawerListener() {
-                    @Override
-                    public void onDrawerOpened(View drawerView) {
-                        //Скрытие клавиатуры при открытие drawer'a
-                        InputMethodManager inputMethodManager = (InputMethodManager) NewsListActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-                        inputMethodManager.hideSoftInputFromWindow(NewsListActivity.this.getCurrentFocus().getWindowToken(), 0);
-                    }
-
-                    @Override
-                    public void onDrawerClosed(View drawerView) {
-
-                    }
-                })
-                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener(){
-
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id, IDrawerItem drawerItem) {
-                        //News Blog
-                        if(drawerItem.getIdentifier() == 0){
-                            OnNewsListClicked();
-                        }
-                        else //Favourite
-                            if (drawerItem.getIdentifier() == 1){
-                                OnFavouriteListClicked();
-                        }
-                        else //Setting
-                            if(drawerItem.getIdentifier() == 2){
-                                OnPreferencesClicked();
-                            }
-                    }
-                })
-                .build();
+       toolbar = (Toolbar) findViewById(R.id.toolbar);
+       if(toolbar != null) {
+           toolbar.setTitle(R.string.action_newsBlog);
+           setSupportActionBar(toolbar);
+           getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+           if (savedInstanceState != null) {
+               resolveUpButtonWithFragmentStack();
+           }
+       }
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        nvDrawer.setItemTextColor(ColorStateList.valueOf(Color.DKGRAY));
+        setupDrawerContent(nvDrawer);
+        drawerToggle = setupDrawerToggle();
+        mDrawer.addDrawerListener(drawerToggle);
     }
 
     @Override
     public void onBackPressed() {
-        // Закрываем Navigation Drawer по нажатию системной кнопки "Назад" если он открыт
-        if (drawerResult.isDrawerOpen()) {
-            drawerResult.closeDrawer();
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            OnNewsListClicked();
         }
+    }
+
+    private void resolveUpButtonWithFragmentStack() {
+        showUpButton(getSupportFragmentManager().getBackStackEntryCount() > 0);
+    }
+
+    private void showUpButton(boolean show) {
+        if(show){
+            drawerToggle.setDrawerIndicatorEnabled(false);
+            if(toolbar != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
+            if(!mToolBarNavigationListenerIsRegistered) {
+                drawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onBackPressed();
+
+                    }
+                });
+                mToolBarNavigationListenerIsRegistered = true;
+            }
+
+        } else {
+            // Remove back button
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            // Show hamburger
+            drawerToggle.setDrawerIndicatorEnabled(true);
+            // Remove the/any drawer toggle listener
+            drawerToggle.setToolbarNavigationClickListener(null);
+            mToolBarNavigationListenerIsRegistered = false;
+        }
+    }
+
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open,  R.string.drawer_close);
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         int id = item.getItemId();
         if(id == R.id.action_settings){
             OnPreferencesClicked();
@@ -124,9 +175,11 @@ public class NewsListActivity extends AppCompatActivity
             if(id == R.id.action_favoriteList){
                 OnFavouriteListClicked();
             }
+            else if (id == android.R.id.home) {
+                onBackPressed();
+            }
         return super.onOptionsItemSelected(item);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -152,6 +205,7 @@ public class NewsListActivity extends AppCompatActivity
             f.getArguments().putString("url", article.link.split(" ")[0]);
             f.reload();
         }
+        showUpButton(true);
     }
 
     @Override
@@ -161,6 +215,7 @@ public class NewsListActivity extends AppCompatActivity
                 .add(R.id.container, f)
                 .addToBackStack(null)
                 .commit();
+        showUpButton(true);
     }
 
     @Override
@@ -168,10 +223,12 @@ public class NewsListActivity extends AppCompatActivity
         Log.i(LOG_TAG, "click on favouriteList");
         Intent intent = new Intent(NewsListActivity.this, FavouriteActivity.class);
         startActivity(intent);
+        showUpButton(false);
     }
 
     @Override
     public void OnNewsListClicked() {
+        drawerToggle.setDrawerIndicatorEnabled(true);
         NewsListFragment fragment = new NewsListFragment();
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)

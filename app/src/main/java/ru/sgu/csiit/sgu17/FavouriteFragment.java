@@ -27,6 +27,7 @@ public class FavouriteFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<List<Article>> {
 
     private static final String LOG_TAG = "FavouriteFragment";
+    Toolbar toolbar;
 
     public interface Listener {
         void OnArticleClicked(Article article);
@@ -41,6 +42,7 @@ public class FavouriteFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         this.dataAdapter = new NewsItemAdapter(getActivity(), favouriteArticles);
         getLoaderManager().initLoader(0, null, this);
     }
@@ -52,10 +54,12 @@ public class FavouriteFragment extends Fragment
         ListView newsList = (ListView) v.findViewById(R.id.favourite_list);
         newsList.setAdapter(dataAdapter);
 
-        Toolbar toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
+        toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
         if(toolbar != null) {
             toolbar.setTitle(R.string.action_favoriteList);
         }
+
+
         newsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

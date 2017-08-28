@@ -7,7 +7,7 @@
         android:id="@+id/icon_item"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/settings"/>
+        android:src="@drawable/feed"/>
     <TextView
         android:id="@+id/name_item"
         android:layout_margin="5dp"
@@ -19,7 +19,7 @@
         android:textColor="#423f47"
         android:lineSpacingExtra="10sp"
         android:paddingLeft="32dp"
-        android:text="Setting"
+        android:text="News Blog"
         android:layout_toRightOf="@id/icon_item" />
 
 </RelativeLayout>

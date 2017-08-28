@@ -20,6 +20,7 @@
 
         <Switch
             android:drawableLeft="@drawable/data"
+            android:drawablePadding="10dp"
             android:id="@+id/wi_fi_only_sw"
             android:textColor="#de000000"
             android:layout_width="match_parent"
@@ -29,6 +30,7 @@
 
         <Switch
             android:drawableLeft="@drawable/location"
+            android:drawablePadding="10dp"
             android:id="@+id/use_location_sw"
             android:layout_margin="10dp"
             android:textColor="#de000000"
@@ -37,6 +39,7 @@
             android:text="@string/use_location" />
         <Switch
             android:drawableLeft="@drawable/notification"
+            android:drawablePadding="10dp"
             android:id="@+id/notifications_sw"
             android:textColor="#de000000"
             android:layout_width="match_parent"
@@ -46,6 +49,7 @@
 
         <TextView
             android:drawableLeft="@drawable/update"
+            android:drawablePadding="10dp"
             android:id="@+id/periodic_updates_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,6 +59,7 @@
 
         <TextView
             android:id="@+id/period"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="35dp"

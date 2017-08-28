@@ -10,6 +10,12 @@
     android:title="@string/action_prefs"/>
 
     <item
+        android:visible="false"
+        app:showAsAction="always"
+        android:id="@+id/action_favorite_main"
+        android:icon="@drawable/favorite"
+        />
+    <item
         android:id="@+id/action_favoriteList"
         android:orderInCategory="101"
         android:title="@string/action_favoriteList"/>
