@@ -6,6 +6,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".NewsListActivity">
 
+     <!--   <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:minHeight="?attr/actionBarSize"
+            android:transitionName="actionBar"
+            android:paddingTop="@dimen/tool_bar_top_padding"/>-->
 
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -27,9 +36,8 @@
             android:elevation="4dp"
             android:minHeight="?attr/actionBarSize"
             android:transitionName="actionBar"/>
-            <!--android:paddingTop="@dimen/tool_bar_top_padding"/>-->
+            android:paddingTop="@dimen/tool_bar_top_padding"/>
     </RelativeLayout>
-
     <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"

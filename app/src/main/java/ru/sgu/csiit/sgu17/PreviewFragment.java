@@ -51,6 +51,7 @@ public class PreviewFragment extends Fragment{
         inflater.inflate(R.menu.menu_main, menu);
         item = menu.findItem(R.id.action_favorite_main);
         item.setVisible(true);
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -159,8 +160,6 @@ public class PreviewFragment extends Fragment{
                    .add(R.id.containerFavourite, fragment)
                    //.addToBackStack(null)
                    .commit();
-
         }
     }
-
 }

@@ -180,20 +180,12 @@ public class NewsListActivity extends AppCompatActivity
             }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+    
 
     @Override
     public void OnArticleClicked(Article article) {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-
-           Log.i(LOG_TAG, "click on Article");
            PreviewFragment fragment = new PreviewFragment(article, false);
-
                 getFragmentManager().beginTransaction()
                         .add(R.id.container, fragment) //добавляем в контейнер
                         .addToBackStack(null) //чтобы можно было нажать назад и вернуться обратно

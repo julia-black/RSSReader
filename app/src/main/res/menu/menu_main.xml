@@ -13,7 +13,7 @@
         android:visible="false"
         app:showAsAction="always"
         android:id="@+id/action_favorite_main"
-        android:icon="@drawable/favorite"
+        android:icon="@drawable/ic_favorite_white_24dp"
         />
     <item
         android:id="@+id/action_favoriteList"

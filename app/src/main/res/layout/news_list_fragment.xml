@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swipeRefresh"
-    android:background="@android:color/white"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+>
 
     <TextView
         android:layout_width="wrap_content"
@@ -18,11 +13,20 @@
         android:id="@+id/textNotArticles"
         android:text="The list of articles is empty. Try to refresh using swipe."/>
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeRefresh"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <ListView
         android:id="@+id/news_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        tools:listitem="@layout/news_list_item" />
+        tools:listitem="@layout/news_list_item"
+        android:divider="@drawable/separator"
+        android:showDividers="middle"
+        android:dividerPadding="3dp"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>
-</android.support.v4.widget.SwipeRefreshLayout>

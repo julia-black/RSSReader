@@ -130,8 +130,8 @@ public class NewsListFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         Log.i(LOG_TAG, "on create menu");
         inflater.inflate(R.menu.menu_main, menu);
-         item = menu.findItem(R.id.action_favorite_main);
-         item.setVisible(false);
+        item = menu.findItem(R.id.action_favorite_main);
+        item.setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
     }
 

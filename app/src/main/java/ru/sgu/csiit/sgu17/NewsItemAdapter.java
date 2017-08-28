@@ -53,6 +53,7 @@ class NewsItemAdapter extends BaseAdapter {
         if (convertView == null) {
             v = inflater.inflate(R.layout.news_list_item, parent, false);
             ViewHolder holder = new ViewHolder();
+            holder.topDate = (TextView) v.findViewById(R.id.topDate);
             holder.titleView = (TextView) v.findViewById(R.id.title);
             holder.pubDateView = (TextView) v.findViewById(R.id.pub_date);
             holder.imageNews = (ImageView) v.findViewById(R.id.imageNews);
@@ -77,6 +78,7 @@ class NewsItemAdapter extends BaseAdapter {
         private TextView titleView;
         private TextView pubDateView;
         private ImageView imageNews;
+        private TextView topDate;
     }
 
 }

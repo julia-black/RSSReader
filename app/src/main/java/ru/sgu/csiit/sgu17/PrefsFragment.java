@@ -40,16 +40,16 @@ public class PrefsFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(menu.size() == 2) {
-            inflater.inflate(R.menu.menu_favourite, menu);
-            super.onCreateOptionsMenu(menu, inflater);
-        }
+       //if(menu.size() == 2) {
+       //    inflater.inflate(R.menu.menu_main, menu);
+           super.onCreateOptionsMenu(menu, inflater);
+      // }
     }
 
     @Override

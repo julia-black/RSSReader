@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="#DCDCDC"
     android:orientation="vertical"
     android:padding="16dp">
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/roundcorner"
+    android:elevation="4dp"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/imageNews"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="270dp"
         tools:src = "@drawable/article_demo"
         />
     <TextView
@@ -25,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
         android:ellipsize="end"
         android:layout_weight="1"
         android:fontFamily="sans-serif"
@@ -39,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/title_article"
-        android:layout_marginTop="8dp"
+        android:layout_marginLeft="10dp"
         android:fontFamily="sans-serif"
         android:textColor="@android:color/darker_gray"
         android:textSize="12sp"
@@ -52,20 +58,23 @@
         android:layout_marginTop="4dp"
         android:fontFamily="sans-serif"
         android:maxLines="4"
+        android:layout_margin="10dp"
         android:textColor="#8B000000"
         android:textSize="12sp"
         tools:text="8 апреля в XI и XII корпусах Саратовского университета прошла акция проверки грамотности «Тотальный диктант». Автором текста в этом году стал писатель Леонид Юзефович. Он описал три своих любимых города: Пермь, Улан-Удэ и Санкт-Петербург. В соответствии с часовым поясом Саратову досталась третья часть – «Город на реке. Улан-Удэ. Селенга»." />
 
     <TextView
         android:id="@+id/linkReadMore"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/description"
         android:layout_marginTop="4dp"
         android:fontFamily="sans-serif"
         android:maxLines="4"
+        android:layout_margin="10dp"
         android:textColor="@android:color/holo_blue_dark"
         android:textSize="14sp"
         android:text="READ MORE" />
 </LinearLayout>
-</LinearLayout>
+</ScrollView>
+</RelativeLayout>
