@@ -56,8 +56,17 @@ public final class RssUtils {
                     }
                 }
                 if(!existGuid(res, article.guid))
+                    if(res.size() == 0){
+                        article.isFirst = true;
+                    }
+                    else {
+                        if (!res.get(res.size() - 1).pubDate.substring(0, 10).equals(article.pubDate.substring(0, 10))) {
+                            article.isFirst = true;
+                            res.get(res.size() - 1).isLast = true;
+                        }
+                    }
+                    //Log.i("RssUtils", article.pubDate + " isFirst =" + article.isFirst + " isLast = " + article.isLast);
                     res.add(article);
-
             } else {
                 skipTag(parser);
             }

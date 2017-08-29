@@ -1,6 +1,7 @@
 package ru.sgu.csiit.sgu17;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 class NewsItemAdapter extends BaseAdapter {
@@ -64,8 +70,21 @@ class NewsItemAdapter extends BaseAdapter {
 
         ViewHolder holder = (ViewHolder) v.getTag();
         holder.titleView.setText(art.title);
-        holder.pubDateView.setText(art.pubDate);
+        holder.pubDateView.setText(art.pubDate.substring(11,art.pubDate.length()));
 
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date = dateFormat.format(new Date());
+        if(art.isFirst){
+            holder.topDate.setVisibility(View.VISIBLE);
+            if(date.equals(art.pubDate.substring(0,10))) {
+                Log.i("Adapter","Today " + date + " " + art.pubDate.substring(0,10) + " " + art.title);
+                holder.topDate.setText("Today");
+            }
+            else {
+                holder.topDate.setText(art.pubDate.substring(0, 10));
+            }
+        }
         String urlImage = art.link.split(" ")[1];
         Glide.with(context)
                 .load(urlImage)

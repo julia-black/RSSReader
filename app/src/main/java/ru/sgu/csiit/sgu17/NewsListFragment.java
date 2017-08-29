@@ -78,7 +78,6 @@ public class NewsListFragment extends Fragment
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.i(LOG_TAG, "on Create");
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         this.dataAdapter = new NewsItemAdapter(getActivity(), data);
@@ -89,7 +88,6 @@ public class NewsListFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i(LOG_TAG, "on create view");
         View v = inflater.inflate(R.layout.news_list_fragment, container, false);
         toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
         if(toolbar != null) {
@@ -117,7 +115,6 @@ public class NewsListFragment extends Fragment
 
     @Override
     public void onStart() {
-        Log.i(LOG_TAG, "on Start");
         super.onStart();
         toolbar = (Toolbar)getActivity().findViewById(R.id.toolbar);
         if(toolbar != null) {
@@ -128,7 +125,6 @@ public class NewsListFragment extends Fragment
     }
 
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Log.i(LOG_TAG, "on create menu");
         inflater.inflate(R.menu.menu_main, menu);
         item = menu.findItem(R.id.action_favorite_main);
         item.setVisible(false);

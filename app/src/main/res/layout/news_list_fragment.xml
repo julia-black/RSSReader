@@ -5,28 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
->
+    android:padding="16dp"
+    android:background="#DCDCDC"
 
+>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textNotArticles"
+        android:textColor="#DCDCDC"
         android:text="The list of articles is empty. Try to refresh using swipe."/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeRefresh"
-        android:background="@android:color/white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/roundcorner"
+        android:elevation="4dp">
     <ListView
         android:id="@+id/news_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        tools:listitem="@layout/news_list_item"
-        android:divider="@drawable/separator"
-        android:showDividers="middle"
-        android:dividerPadding="3dp"/>
+        tools:listitem="@layout/news_list_item"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>
