@@ -120,10 +120,14 @@ class NewsItemAdapter extends BaseAdapter {
                 if (art.title == data.get(0).title){
                     holder.layoutItem.setBackgroundResource(R.drawable.roundcorner_top);
                 }
-                else if(art.title == data.get(data.size() - 1).title){
-                    holder.layoutItem.setBackgroundResource(R.drawable.roundcorner_bottom);
-                    holder.separator.setVisibility(View.INVISIBLE);
+                if (art.title == data.get(data.size() - 1).title) {
+                        holder.layoutItem.setBackgroundResource(R.drawable.roundcorner_bottom);
+                        holder.separator.setVisibility(View.INVISIBLE);
                 }
+                if(art.title == data.get(data.size() - 1).title && art.title == data.get(0).title){
+                    holder.layoutItem.setBackgroundResource(R.drawable.roundcorner);
+                }
+
             }
         }
         String urlImage = art.link.split(" ")[1];
