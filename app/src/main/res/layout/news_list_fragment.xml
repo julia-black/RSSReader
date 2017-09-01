@@ -20,14 +20,13 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/roundcorner"
-        android:elevation="4dp">
+        android:layout_height="match_parent">
     <ListView
         android:id="@+id/news_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        tools:listitem="@layout/news_list_item"/>
+        tools:listitem="@layout/news_list_item"
+        android:divider="@android:color/transparent"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

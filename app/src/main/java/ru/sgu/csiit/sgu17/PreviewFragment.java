@@ -85,6 +85,7 @@ public class PreviewFragment extends Fragment{
         this.textDate.setText(article.pubDate);
         String urlImage = article.link.split(" ")[1];
 
+        Log.i(LOG_TAG, article.title + " " + article.isFirst + " " + article.isLast);
         Glide.with(getActivity())
                 .load(urlImage)
                 .into(imageView);

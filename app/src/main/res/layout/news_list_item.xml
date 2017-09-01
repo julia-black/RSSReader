@@ -4,11 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:id="@+id/layout_item"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="8dp"
-    android:paddingBottom="8dp">
-
+    android:background="@android:color/white"
+    >
     <TextView
         android:id="@+id/topDate"
         android:layout_width="wrap_content"
@@ -39,7 +40,6 @@
         android:layout_width="100dp"
         android:layout_height="78dp"
         android:layout_marginTop="20dp"
-
         android:layout_toRightOf="@id/title"
         tools:src = "@drawable/article_demo"
         />
@@ -55,8 +55,8 @@
         android:textSize="12sp"
         tools:text="10.04.17 10:32" />
     <ImageView
+        android:id="@+id/separator"
         android:layout_below="@id/imageNews"
-        android:padding="1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/separator"/>

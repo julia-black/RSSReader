@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:padding="16dp"
+    android:background="#DCDCDC">
 
         <TextView
             android:layout_width="wrap_content"
@@ -16,7 +17,7 @@
         <ListView
             android:id="@+id/favourite_list"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            tools:listitem="@layout/news_list_item" />
+            tools:listitem="@layout/news_list_item"
+            android:layout_height="wrap_content"
+            android:divider="@android:color/transparent"/>
 </LinearLayout>

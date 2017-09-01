@@ -43,7 +43,7 @@ public class FavouriteFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        this.dataAdapter = new NewsItemAdapter(getActivity(), favouriteArticles);
+        this.dataAdapter = new NewsItemAdapter(getActivity(), favouriteArticles, true);
         getLoaderManager().initLoader(0, null, this);
     }
 
@@ -58,8 +58,6 @@ public class FavouriteFragment extends Fragment
         if(toolbar != null) {
             toolbar.setTitle(R.string.action_favoriteList);
         }
-
-
         newsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

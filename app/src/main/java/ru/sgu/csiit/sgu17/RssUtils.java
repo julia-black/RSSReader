@@ -55,7 +55,7 @@ public final class RssUtils {
                         skipTag(parser);
                     }
                 }
-                if(!existGuid(res, article.guid))
+                if(!existGuid(res, article.guid) && (!existTitle(res,article.title)))
                     if(res.size() == 0){
                         article.isFirst = true;
                     }
@@ -74,7 +74,14 @@ public final class RssUtils {
 
         return res;
     }
-
+    private static boolean existTitle(List<Article> articles,String title){
+        for (int i = 0; i< articles.size(); i++){
+            if(articles.get(i).title == title){
+                return true;
+            }
+        }
+        return false;
+    }
     private static boolean existGuid(List<Article> articles, long guid){
         for (int i = 0; i< articles.size(); i++){
             if(articles.get(i).guid == guid){

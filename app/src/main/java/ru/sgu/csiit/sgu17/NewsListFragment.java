@@ -80,7 +80,7 @@ public class NewsListFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        this.dataAdapter = new NewsItemAdapter(getActivity(), data);
+        this.dataAdapter = new NewsItemAdapter(getActivity(), data, false);
         getLoaderManager().initLoader(0, null, this);
 
     }
