@@ -7,7 +7,6 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:background="#DCDCDC"
-
 >
     <TextView
         android:layout_width="wrap_content"
@@ -19,14 +18,15 @@
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeRefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="537dp">
     <ListView
         android:id="@+id/news_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         tools:listitem="@layout/news_list_item"
-        android:divider="@android:color/transparent"/>
+        android:divider="@android:color/transparent"
+        android:background="@drawable/roundcorner"/>
     </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

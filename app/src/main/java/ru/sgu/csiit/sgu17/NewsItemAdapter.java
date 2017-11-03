@@ -69,8 +69,14 @@ class NewsItemAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        //for (int i = 0; i < data.size(); i++) {
-        //    Log.i("Adapter", data.get(i).title + " " + data.get(i).isFirst + " " + data.get(i).isLast);
+        //if(!isFavouriteList){
+        //    for (int i = 0; i < data.size(); i++) {
+        //        for (int j = 0; j < data.size(); j++) {
+        //            if(data.get(i).guid == data.get(j).guid && i != j){
+        //                data.remove(j);
+        //            }
+        //        }
+        //    }
         //}
         final Article art = (Article) getItem(position);
         View v;
@@ -96,22 +102,40 @@ class NewsItemAdapter extends BaseAdapter {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = dateFormat.format(new Date());
 
-        if(!isFavouriteList) {
-            if (art.isFirst) {
-                holder.topDate.setVisibility(View.VISIBLE);
-                holder.layoutItem.setElevation(0);
-                holder.layoutItem.setBackgroundResource(R.drawable.roundcorner_top);
+        holder.topDate.setVisibility(View.VISIBLE);
+        holder.topDate.setText(art.pubDate.substring(0, 10));
+        holder.layoutItem.setElevation(0);
 
-                if (date.equals(art.pubDate.substring(0, 10))) {
-                    holder.topDate.setText("Today");
-                } else {
-                    holder.topDate.setText(art.pubDate.substring(0, 10));
+        if(!isFavouriteList) {
+            if(data.size() > 0) {
+                if (art.title == data.get(0).title){
+                    holder.layoutItem.setBackgroundResource(R.drawable.roundcorner_top);
                 }
-            } else if (art.isLast) {
-                holder.layoutItem.setBackgroundResource(R.drawable.roundcorner_bottom);
-                holder.layoutItem.setElevation(5);
-                holder.separator.setVisibility(View.INVISIBLE);
+                if (art.title == data.get(data.size() - 1).title) {
+                    holder.layoutItem.setBackgroundResource(R.drawable.roundcorner_bottom);
+                    holder.separator.setVisibility(View.INVISIBLE);
+
+                    holder.layoutItem.setMinimumHeight(holder.layoutItem.getHeight() - 5);
+                }
+               // if(art.title == data.get(data.size() - 1).title && art.title == data.get(0).title){
+               //     holder.layoutItem.setBackgroundResource(R.drawable.roundcorner);
+               // }
+
             }
+              //if (art.isFirst) {
+              //  holder.topDate.setVisibility(View.VISIBLE);
+              // holder.layoutItem.setElevation(0);
+              //holder.layoutItem.setBackgroundResource(R.drawable.roundcorner_top);
+              //if (date.equals(art.pubDate.substring(0, 10))) {
+              //    holder.topDate.setText("Today");
+              //} else {
+              //holder.topDate.setText(art.pubDate.substring(0, 10));
+              // }
+           //} else if (art.isLast) {
+           //   holder.layoutItem.setBackgroundResource(R.drawable.roundcorner_bottom);
+           //   holder.layoutItem.setElevation(5);
+           //   holder.separator.setVisibility(View.INVISIBLE);
+           //}
         }
         else {
             holder.topDate.setVisibility(View.VISIBLE);
@@ -123,18 +147,19 @@ class NewsItemAdapter extends BaseAdapter {
                 if (art.title == data.get(data.size() - 1).title) {
                         holder.layoutItem.setBackgroundResource(R.drawable.roundcorner_bottom);
                         holder.separator.setVisibility(View.INVISIBLE);
+                       // holder.layoutItem.setElevation(5);
                 }
                 if(art.title == data.get(data.size() - 1).title && art.title == data.get(0).title){
                     holder.layoutItem.setBackgroundResource(R.drawable.roundcorner);
                 }
-
             }
         }
-        String urlImage = art.link.split(" ")[1];
-        Glide.with(context)
-                .load(urlImage)
-                .into(holder.imageNews);
-
+        if(art.link.split(" ").length > 1) {
+            String urlImage = art.link.split(" ")[1];
+            Glide.with(context)
+                    .load(urlImage)
+                    .into(holder.imageNews);
+        }
         return v;
     }
 

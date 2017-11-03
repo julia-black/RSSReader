@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -83,13 +84,19 @@ public class PreviewFragment extends Fragment{
         this.textTitle.setText(article.title);
         this.textDescript.setText(article.description);
         this.textDate.setText(article.pubDate);
-        String urlImage = article.link.split(" ")[1];
 
-        Log.i(LOG_TAG, article.title + " " + article.isFirst + " " + article.isLast);
-        Glide.with(getActivity())
-                .load(urlImage)
-                .into(imageView);
+        if(article.link.split(" ").length > 1) {
+            String urlImage = article.link.split(" ")[1];
+            Log.i(LOG_TAG, article.title + " " + article.isFirst + " " + article.isLast);
+            Glide.with(getActivity())
+                    .load(urlImage)
+                    .into(imageView);
 
+        } else {
+            Toast.makeText(getActivity(), "Not url, error resourse", Toast.LENGTH_SHORT)
+                    .show();
+
+        }
         v.findViewById(R.id.linkReadMore).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

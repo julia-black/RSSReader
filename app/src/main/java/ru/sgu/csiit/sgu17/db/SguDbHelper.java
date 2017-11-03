@@ -22,6 +22,7 @@ public class SguDbHelper extends SQLiteOpenHelper {
                 + SguDbContract.COLUMN_DESCRIPTION + " TEXT, "
                 + SguDbContract.COLUMN_LINK + " TEXT NOT NULL, "
                 + SguDbContract.COLUMN_PUBDATE + " DATETIME"
+                + " UNIQUE (" + SguDbContract.COLUMN_GUID + ") ON CONFLICT IGNORE"
                 + ")";
         db.execSQL(sql);
     }
